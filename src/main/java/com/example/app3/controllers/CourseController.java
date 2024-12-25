@@ -3,7 +3,10 @@ package com.example.app3.controllers;
 import com.example.app3.models.Course;
 import com.example.app3.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/courses")
@@ -13,8 +16,8 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping
-    public String getAll(){
-        return courseService.getAllCourses();
+    public ResponseEntity<List<Course>> getAll(){
+        return ResponseEntity.ok(courseService.getAllCourses());
     }
 
     @PostMapping(value = "/new")
@@ -24,8 +27,8 @@ public class CourseController {
     }
 
     @GetMapping(value = "/getbyid")
-    public String getCourseById(@RequestParam int id){
-        return courseService.getCourseById(id);
+    public ResponseEntity<Course> getCourseById(@RequestParam int id){
+        return ResponseEntity.ok(courseService.getCourseById(id));
     }
 
     @PutMapping(value = "/update")
