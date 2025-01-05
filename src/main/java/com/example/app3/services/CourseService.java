@@ -1,6 +1,7 @@
 package com.example.app3.services;
 
 import com.example.app3.models.Course;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 @Service
 public class CourseService {
     private List<Course> courses = new ArrayList<>();
+    @Autowired private RequestService requestService;
 
     // List.of(new Course(1, "Java", "Java desc"), new Course(2, "PHP", "PHP desc"), new Course(3,"Go", "Go desc"))
     public List<Course> getAllCourses() {
@@ -16,21 +18,9 @@ public class CourseService {
     }
 
     public void newCourse(Course course) {
-        try {
             courses.add(course);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            requestService.sendNewCourse(course.getId());
     }
-
-//    public String getCourseById(int id){
-//        for (Course course : courses) {
-//            if (id == course.getId()){
-//                return course.toString();
-//            }
-//        }
-//        return "";
-//    }
 
     public Course getCourseById(int id) {
         for (Course course : courses) {

@@ -26,8 +26,8 @@ public class CourseController {
         return "true";
     }
 
-    @GetMapping(value = "/getbyid")
-    public ResponseEntity<Course> getCourseById(@RequestParam int id){
+    @GetMapping(value = "/getbyid/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable int id){
         return ResponseEntity.ok(courseService.getCourseById(id));
     }
 
