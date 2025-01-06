@@ -10,16 +10,27 @@ import java.util.List;
 @Service
 public class CourseService {
     private List<Course> courses = new ArrayList<>();
-    @Autowired private RequestService requestService;
+    @Autowired
+    private RequestService requestService;
 
-    // List.of(new Course(1, "Java", "Java desc"), new Course(2, "PHP", "PHP desc"), new Course(3,"Go", "Go desc"))
+    private void fetchCourses() {
+        courses = requestService.getCourses();
+    }
+
+    private void saveCourses() {
+        requestService.saveCourses(courses);
+    }
+
+
     public List<Course> getAllCourses() {
         return courses;
     }
 
     public void newCourse(Course course) {
-            courses.add(course);
-            requestService.sendNewCourse(course.getId());
+        fetchCourses();
+        courses.add(course);
+        requestService.sendNewCourse(course.getId());
+        saveCourses();
     }
 
     public Course getCourseById(int id) {
@@ -32,26 +43,33 @@ public class CourseService {
     }
 
     public boolean updateCourseById(Course course) {
+        fetchCourses();
         for (int i = 0; i < courses.size(); i++) {
             if (course.getId() == courses.get(i).getId()) {
                 courses.set(i, course);
+                saveCourses();
                 return true;
             } else {
                 newCourse(course);
+                saveCourses();
                 return true;
             }
         }
+        saveCourses();
         return false;
     }
 
 
     public boolean deleteCourseById(int id) {
+        fetchCourses();
         for (Course course : courses) {
             if (id == course.getId()) {
                 courses.remove(course);
+                saveCourses();
                 return true;
             }
         }
+        saveCourses();
         return false;
     }
 }
