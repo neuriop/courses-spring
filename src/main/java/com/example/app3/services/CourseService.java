@@ -14,7 +14,10 @@ public class CourseService {
     private RequestService requestService;
 
     private void fetchCourses() {
-        courses = requestService.getCourses();
+        List<Course> courses1;
+        if ((courses1 = requestService.getCourses()) != null) {
+            courses = courses1;
+        }
     }
 
     private void saveCourses() {
@@ -28,8 +31,8 @@ public class CourseService {
 
     public void newCourse(Course course) {
         fetchCourses();
+        course.setId(courses.size());
         courses.add(course);
-        requestService.sendNewCourse(course.getId());
         saveCourses();
     }
 
